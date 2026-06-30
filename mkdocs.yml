@@ -1,0 +1,52 @@
+site_name: PassWolf
+site_description: Correct, spec-compliant Active Directory password change, reset, and policy read.
+site_url: https://strongwind1.github.io/PassWolf/
+repo_url: https://github.com/StrongWind1/PassWolf
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: deep purple
+    accent: deep purple
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - content.code.copy
+    - search.highlight
+nav:
+  - Home: index.md
+  - Using passwolf:
+    - Getting started: guide/getting-started.md
+    - "passwolf change: change a password": guide/change.md
+    - "passwolf reset: reset a password": guide/reset.md
+    - "passwolf policy: read the policy": guide/policy.md
+    - Choosing a method: guide/choosing-a-method.md
+    - Output formats: guide/output-formats.md
+  - How it works:
+    - Architecture: internals/architecture.md
+    - Crypto and password buffers: internals/crypto.md
+    - Change methods in detail: internals/change-methods.md
+    - Reset methods in detail: internals/reset-methods.md
+    - Reading the policy in detail: internals/policy-methods.md
+    - Transport and channels: internals/transport.md
+    - Errors and NTSTATUS: internals/errors.md
+    - Compared to impacket: internals/impacket.md
+  - Reference:
+    - Method matrix: methods.md
+    - "SAMR RPC reference": reference/samr.md
+    - What it looks like in the logs: reference/events.md
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - def_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true

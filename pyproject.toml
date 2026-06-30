@@ -1,0 +1,143 @@
+[project]
+name = "passwolf"
+dynamic = ["version"]
+description = "Correct, spec-compliant Active Directory password change, reset, and policy read over SAMR, Netlogon, LSA, Kerberos, and LDAP — including the AES paths impacket lacks."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11,<3.15"
+authors = [
+    { name = "StrongWind1" },
+]
+keywords = [
+    "active-directory",
+    "samr",
+    "netlogon",
+    "kerberos",
+    "ldap",
+    "password",
+    "penetration-testing",
+    "red-team",
+    "security",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Security",
+]
+dependencies = [
+    "impacket",
+    "pycryptodome",
+    "rich",
+]
+
+[project.urls]
+Repository = "https://github.com/StrongWind1/PassWolf"
+Documentation = "https://strongwind1.github.io/PassWolf/"
+Changelog = "https://github.com/StrongWind1/PassWolf/blob/main/CHANGELOG.md"
+Issues = "https://github.com/StrongWind1/PassWolf/issues"
+
+[project.scripts]
+passwolf = "passwolf.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.11",
+    "ty>=0.0.1a7",
+    "pre-commit>=4.0",
+]
+docs = [
+    "mkdocs-material>=9.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 320
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # Formatter / mutually-exclusive-rule conflicts only. ruff format owns COM812 and ISC001, and ALL
+    # enables both halves of the D203/D211 and D212/D213 pairs, which cannot be satisfied at once, so one
+    # of each must be ignored or ruff warns and picks arbitrarily.
+    "COM812", # trailing comma placement is managed by the formatter
+    "ISC001", # implicit string concatenation is managed by the formatter
+    "D203",   # one-blank-line-before-class; incompatible with D211, we follow D211
+    "D213",   # multi-line-summary-second-line; incompatible with D212, we follow D212
+]
+
+[tool.ruff.lint.per-file-ignores]
+# crypto.py implements the protocol's mandated legacy primitives; flagging them as "insecure" is noise.
+"src/passwolf/crypto.py" = ["S303", "S304", "S305", "S324"] # MD4/MD5/SHA1 OWFs, DES/RC4 ciphers, ECB mode are required by [MS-SAMR]/[MS-NRPC]
+# ndr.py mirrors the on-the-wire IDL names exactly, so its struct/function names are not Python-cased.
+"src/passwolf/ndr.py" = ["N801", "N802"] # NDR type names (SAMPR_USER_INTERNAL8_INFORMATION, ...) copy the [MS-SAMR] wire names
+"src/passwolf/console.py" = [
+    "PLC0415", # rich is imported lazily so the common text/JSON paths carry no rich import cost
+    "FBT001",  # tri-state policy booleans are rendered to display strings; these are formatters, not boolean control-flow flags
+]
+"src/passwolf/constants.py" = ["S105"]  # PASSWORD_SETTINGS_CONTAINER_RDN is an LDAP container RDN, not a credential
+"src/passwolf/policy.py" = ["S105"]     # the control-character policy-probe password is a deliberate violating literal, not a secret
+"src/passwolf/model.py" = ["S105"]      # method-enum values and placeholders contain the word "password" but hold no secret
+"src/passwolf/errors.py" = ["N818"]     # the exception hierarchy is named PasswolfError/MethodUnavailable/OperationFailed by design
+# The protocol modules below take many wire-derived parameters per call (server, user, OWF buffers, flags,
+# handles); bundling them into structs would obscure the one-to-one [MS-*] field mapping. PLR0913 stays
+# enforced everywhere else (CLIs, model, console, policy).
+"src/passwolf/transport.py" = ["PLR0913"] # open_channel carries the bind, interface, pipe, transport, and seal flag
+"src/passwolf/samr.py" = ["PLR0913"]      # SAMR change/reset calls carry server, user, password buffers, OWFs, and flags
+"src/passwolf/kpasswd.py" = ["PLR0913"]   # the kpasswd wrappers take the full clientName/domain/target/secret set
+"src/passwolf/ldap.py" = ["PLR0913"]      # the LDAP change/reset carry target, identity, user, old+new values, and the LDAPS flag
+"src/passwolf/netlogon.py" = ["PLR0913"]  # the Netlogon change carries target, netbios, account, name, new password, and old secret
+"src/passwolf/cli.py" = ["T201"]                # the umbrella dispatcher prints usage/version to stdout
+"src/passwolf/change.py" = ["T201", "TRY400"]   # a CLI: prints results to stdout and logs clean user-facing errors (no traceback)
+"src/passwolf/reset.py" = ["T201", "TRY400"]    # a CLI: prints results to stdout and logs clean user-facing errors (no traceback)
+"src/passwolf/pwpolicy.py" = ["T201", "TRY400"] # a CLI: prints results to stdout and logs clean user-facing errors (no traceback)
+"tests/**" = ["ALL"] # test code is exempt from all lint rules
+
+[tool.ty.environment]
+python-version = "3.11"
+root = ["src"]
+
+[tool.ty.rules]
+all = "error"
+
+[tool.ty.terminal]
+error-on-warning = true
+
+[tool.ty.analysis]
+replace-imports-with-any = [
+    "impacket.**",
+    "Crypto.**",
+]
+allowed-unresolved-imports = []
+
+[[tool.ty.overrides]]
+include = ["tests/**"]
+
+[tool.ty.overrides.rules]
+all = "ignore"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/passwolf/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/passwolf"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/site",
+    "/docs",
+]
