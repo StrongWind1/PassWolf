@@ -1,4 +1,4 @@
-.PHONY: test lint format typecheck check build clean distclean install install-tool install-dev docs docs-check docs-serve
+.PHONY: test lint format typecheck check build clean distclean install install-tool install-dev docs docs-check docs-serve hooks
 
 test:
 	uv run pytest
@@ -28,6 +28,9 @@ install-tool:
 install-dev:
 	uv sync
 
+hooks:
+	uv run pre-commit install
+
 docs:
 	uv run --group docs mkdocs build
 
@@ -40,9 +43,26 @@ docs-serve:
 	uv run --group docs mkdocs serve
 
 clean:
-	rm -rf dist/ build/ *.egg-info site/
-	find . -type d -name __pycache__ -exec rm -rf {} +
-	rm -rf .pytest_cache .ruff_cache .ty .cache
+	rm -rf dist/ build/ site/ .cache/
+	rm -rf .pytest_cache/ .ruff_cache/ .mypy_cache/ .ty/ .ty_cache/
+	rm -rf htmlcov/ .coverage .coverage.* coverage.xml
+	find . -path ./.venv -prune -o -type d -name '__pycache__' -exec rm -rf {} +
+	find . -path ./.venv -prune -o -type d -name '*.egg-info' -exec rm -rf {} +
+	find . -path ./.venv -prune -o -type f -name '*.py[co]' -exec rm -f {} +
 
 distclean: clean
 	rm -rf .venv/
+
+
+# --- Release: bump version, refresh deps, verify, signed commit + signed tag, push ---
+.PHONY: cut-release
+cut-release:
+	@test -n "$(VERSION)" || { echo "usage: make cut-release VERSION=X.Y.Z"; exit 1; }
+	sed -i 's/^__version__ = ".*"/__version__ = "$(VERSION)"/' src/passwolf/__init__.py
+	uv lock --upgrade
+	$(MAKE) check
+	git add src/passwolf/__init__.py uv.lock
+	@git diff --cached --quiet || git commit -S -m "chore(release): v$(VERSION)"
+	git tag -s "v$(VERSION)" -m "v$(VERSION)"
+	git push origin HEAD
+	git push origin "v$(VERSION)"

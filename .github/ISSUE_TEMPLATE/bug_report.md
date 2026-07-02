@@ -1,36 +1,33 @@
 ---
 name: Bug report
-about: Report a bug in passwolf
+about: Report a bug or unexpected behavior
 title: ""
 labels: bug
 assignees: ""
 ---
 
-## Command
+**Describe the bug**
+A clear description of what happened.
 
-The exact command you ran (redact credentials):
+**Command**
+The exact `passwolf` command you ran (redact sensitive values):
 
 ```bash
-
+passwolf ...
 ```
 
-## Output
-
-What happened (paste the full output, with `--format json` if possible):
-
-```
+**Output**
+Paste the full output (use `-vvv` for trace-level detail where supported):
 
 ```
+...
+```
 
-## Expected behavior
+**Expected behavior**
+What you expected to happen.
 
-What you expected to happen instead.
-
-## Environment
-
-- OS: (e.g., Kali 2025.1, Ubuntu 24.04, macOS 15)
-- Python version: (output of `python3 --version`)
-- passwolf version: (output of `passwolf --version`)
-- Subcommand: (`change`, `reset`, or `policy`)
-- Target domain controller Windows Server version: (e.g., Server 2022, Server 2025)
-- Method used: (e.g., `--method samr-aes`, `auto`)
+**Environment**
+- OS: [e.g. Kali 2025.1, Ubuntu 24.04]
+- Python version: [e.g. 3.12.3]
+- PassWolf version: [e.g. 1.0.0]
+- Install method: [e.g. uv, pipx, pip]
