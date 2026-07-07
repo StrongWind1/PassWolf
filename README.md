@@ -1,7 +1,7 @@
 <h1 align="center">PassWolf</h1>
 
 <p align="center">
-  Correct, spec-compliant Active Directory password change, reset, and policy read over SAMR, Netlogon, LSA, Kerberos, and LDAP — including the AES paths impacket lacks.
+  Correct, spec-compliant Active Directory password change, reset, and policy read over SAMR, Netlogon, LSA, Kerberos, and LDAP - including the AES paths impacket lacks.
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
   <a href="https://strongwind1.github.io/PassWolf/methods/">Method matrix</a>
 </p>
 
-One console command, `passwolf`, with three subcommands — `passwolf change`, `passwolf reset`, and `passwolf policy` — that implement every documented and undocumented Windows method for changing or resetting an account password or hash over SAMR, Netlogon, LSA, Kerberos kpasswd, and LDAP, and for reading the effective password policy. A Windows Server 2025 domain controller hardens off the legacy RC4 SAMR change opcodes and accepts only the AES SAMR change (`SamrUnicodeChangePasswordUser4`, opnum 73) in their place; passwolf speaks that AES change, and a good deal more.
+One console command, `passwolf`, with three subcommands - `passwolf change`, `passwolf reset`, and `passwolf policy` - that implement every documented and undocumented Windows method for changing or resetting an account password or hash over SAMR, Netlogon, LSA, Kerberos kpasswd, and LDAP, and for reading the effective password policy. A Windows Server 2025 domain controller hardens off the legacy RC4 SAMR change opcodes and accepts only the AES SAMR change (`SamrUnicodeChangePasswordUser4`, opnum 73) in their place; passwolf speaks that AES change, and a good deal more.
 
 ## Why separate tools
 
@@ -58,9 +58,9 @@ Every method below is mapped to its Microsoft Open Specification section and val
 | `ldap` | LDAP unicodePwd replace | defaults to sealed 389 |
 | `dsrm` (`--dsrm`) | SAMR 66, `SamrSetDSRMPassword` | the DC-local recovery (RID 500) password; selected with the dedicated `--dsrm` flag |
 
-`auto` is the default for both operations. For `passwolf change` it prefers the strongest SAMR change the DC accepts (AES) and falls back to RC4 only when AES is genuinely unavailable, never merely for compatibility. For `passwolf reset` it walks a cross-method ladder — kpasswd, LDAPS, LDAP, then the SAMR resets (AES, RC4, RC4-unsalted, set-hash) — and takes the first that succeeds.
+`auto` is the default for both operations. For `passwolf change` it prefers the strongest SAMR change the DC accepts (AES) and falls back to RC4 only when AES is genuinely unavailable, never merely for compatibility. For `passwolf reset` it walks a cross-method ladder - kpasswd, LDAPS, LDAP, then the SAMR resets (AES, RC4, RC4-unsalted, set-hash) - and takes the first that succeeds.
 
-On **Windows Server 2025**, the Kerberos set (`kpasswd`), the LDAP `unicodePwd` replace (`ldap`), and the AES SAMR RPC reset (`samr-aes`, `SamrSetInformationUser2` opnum 58 + UserInternal7) all work — confirmed live against a Server 2025 domain controller. The 2025 RC4 hardening (CVE-2021-33757 / KB5004605) blocks the legacy SAMR *changes*, not resets, so no `passwolf reset` method is blocked there.
+On **Windows Server 2025**, the Kerberos set (`kpasswd`), the LDAP `unicodePwd` replace (`ldap`), and the AES SAMR RPC reset (`samr-aes`, `SamrSetInformationUser2` opnum 58 + UserInternal7) all work - confirmed live against a Server 2025 domain controller. The 2025 RC4 hardening (CVE-2021-33757 / KB5004605) blocks the legacy SAMR *changes*, not resets, so no `passwolf reset` method is blocked there.
 
 When the target's password is expired or flagged must-change-at-next-logon, `passwolf change` retries the SAMR bind over a null session and completes the change. This covers the buffer-based methods (`samr-aes`, `samr-rc4`, `samr-oem`, `samr-diag`, and `auto`); the handle-based `samr-des` cannot use the null-session path.
 
