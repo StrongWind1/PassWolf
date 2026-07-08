@@ -12,4 +12,4 @@ the AES paths that impacket does not implement and that a Windows Server 2025 SA
 
 from __future__ import annotations
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
