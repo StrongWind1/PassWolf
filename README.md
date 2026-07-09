@@ -71,9 +71,16 @@ All three subcommands bind with NTLM by default, or with Kerberos via `-k` / `--
 
 ## Installation
 
-passwolf is managed with [uv](https://docs.astral.sh/uv/).
+Install from [PyPI](https://pypi.org/project/passwolf/):
 
+```sh
+uv tool install passwolf        # recommended
+pip install passwolf             # or with pip
 ```
+
+Or install from source:
+
+```sh
 uv tool install git+https://github.com/StrongWind1/PassWolf
 ```
 
