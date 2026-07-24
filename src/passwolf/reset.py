@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """passwolf reset: reset an Active Directory password by privileged overwrite.
 
 A reset proves nothing about the old password and requires a privileged caller. passwolf reset speaks every

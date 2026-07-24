@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Single ``passwolf`` console entry point dispatching to the change, reset, and policy subcommands.
 
 The package ships one command, ``passwolf``, with three subcommands that map one-to-one to the

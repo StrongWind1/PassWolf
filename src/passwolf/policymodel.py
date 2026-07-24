@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Normalized records and decoders for the password-policy read tool (``passwolf policy``).
 
 Every read method (the SAMR domain-query classes, the handle-light and per-user SAMR getters, the

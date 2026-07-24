@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """LSA trust-secret set: LsarSetSecret2 (opnum 138, AES) and LsarSetSecret (opnum 29, DES).
 
 A trust password is stored as an LSA secret, so rotating it is a privileged write of a secret value.

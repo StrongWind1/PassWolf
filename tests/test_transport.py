@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Transport-layer Kerberos wiring, exercised against fakes so no live KDC or DC is needed.
 
 The bind logic must turn the -k flag into impacket's Kerberos path: the shared kerberosLogin keyword set

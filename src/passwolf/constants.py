@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Spec-derived constants shared across the password methods.
 
 Every value here is traceable to a Microsoft Open Specification section. Grouping them in one

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """LDAP password change and reset over unicodePwd ([MS-ADTS] 3.1.1.3.1.5).
 
 A change is one Modify that deletes the old quoted value and adds the new one; a reset is one Modify

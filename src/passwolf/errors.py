@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Exception types used to drive method selection and report failures."""
 
 from __future__ import annotations

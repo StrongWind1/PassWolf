@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """passwolf: correct, spec-compliant Active Directory password change, reset, and policy read.
 
 One console command, ``passwolf``, with three subcommands — ``change``, ``reset``, and ``policy``

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Result rendering in text, JSON, and rich-pretty forms.
 
 A single :class:`Outcome` record captures what happened so the three formatters stay consistent. rich

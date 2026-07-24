@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 r"""RAP NetUserPasswordSet2 change (opcode 115) over SMB1 \PIPE\LANMAN.
 
 This is the legacy Remote Administration Protocol password change, a self-service change that proves the

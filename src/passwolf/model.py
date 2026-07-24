@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Shared CLI data model: enums, target/secret records, and input parsing.
 
 These types are transport- and protocol-agnostic so both ``passwolf change`` and ``passwolf reset`` build on the

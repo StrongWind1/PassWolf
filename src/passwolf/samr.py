@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """SAMR change and reset methods.
 
 This module wires the verified SAMR password operations: the AES change (opnum 73) and the legacy RC4,

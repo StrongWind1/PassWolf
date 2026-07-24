@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """CLI dispatch, AUTO fallback, guard, and error-path coverage without a live host.
 
 The live matrices exercise the happy paths against real domain controllers; these tests pin the

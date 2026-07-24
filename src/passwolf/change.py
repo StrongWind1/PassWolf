@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """passwolf change: change an Active Directory password by proving the account's current secret.
 
 A change needs no privilege on the target; it proves the old password (or its NT hash). passwolf change speaks

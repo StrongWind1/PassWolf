@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Password cryptography for the change and reset wire formats.
 
 Everything impacket gets right (the DES OWF transform) is reimplemented here too, deliberately, so the

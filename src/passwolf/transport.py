@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """DCE/RPC transport binding for SAMR and LSA.
 
 Both interfaces can ride an SMB named pipe (ncacn_np) or direct TCP (ncacn_ip_tcp). The reset paths

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """NTSTATUS interpretation for password operations.
 
 Both change and reset surface their outcome as an NTSTATUS in the RPC response. impacket collapses

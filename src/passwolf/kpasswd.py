@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Kerberos password change and set (RFC 3244, MS-KILE 3.1.5.12).
 
 Both the change and the set are sent on the wire with framing version 0xFF80; the change authenticates as

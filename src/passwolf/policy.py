@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Read-only password-policy harvesting, one function per wire method.
 
 This module gathers the effective and configured password policy over every channel a domain controller

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """passwolf policy: read the Active Directory password policy over every channel a DC exposes it on.
 
 Reading the policy is a third operation, distinct from changing and resetting a password, so it lives in

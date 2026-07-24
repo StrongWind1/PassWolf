@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Tests for the read-only password-policy tool: conversions, wire parsing, rendering, and CLI wiring.
 
 These run without a domain controller. The opnum-63 oracle is exercised with the same captured Server

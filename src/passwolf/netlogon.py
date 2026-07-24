@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Netlogon machine and trust password change.
 
 A machine or trust account changes its own password by proving the current secret through a secure

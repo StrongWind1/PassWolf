@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Structure-building regression tests for the AES, set-hash, and RAP paths.
 
 These exercise the request marshalling of the methods impacket does not model, with a stub DCE that

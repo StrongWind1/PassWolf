@@ -76,6 +76,9 @@ ignore = [
     "D213",   # multi-line-summary-second-line; incompatible with D212, we follow D212
 ]
 
+[tool.ruff.lint.flake8-copyright]
+notice-rgx = "(?i)# SPDX-License-Identifier"
+
 [tool.ruff.lint.per-file-ignores]
 # crypto.py implements the protocol's mandated legacy primitives; flagging them as "insecure" is noise.
 "src/passwolf/crypto.py" = ["S303", "S304", "S305", "S324"] # MD4/MD5/SHA1 OWFs, DES/RC4 ciphers, ECB mode are required by [MS-SAMR]/[MS-NRPC]
@@ -93,10 +96,10 @@ ignore = [
 # handles); bundling them into structs would obscure the one-to-one [MS-*] field mapping. PLR0913 stays
 # enforced everywhere else (CLIs, model, console, policy).
 "src/passwolf/transport.py" = ["PLR0913"] # open_channel carries the bind, interface, pipe, transport, and seal flag
-"src/passwolf/samr.py" = ["PLR0913"]      # SAMR change/reset calls carry server, user, password buffers, OWFs, and flags
-"src/passwolf/kpasswd.py" = ["PLR0913"]   # the kpasswd wrappers take the full clientName/domain/target/secret set
+"src/passwolf/samr.py" = ["PLR0913", "PLR0917"]      # SAMR change/reset calls carry server, user, password buffers, OWFs, and flags
+"src/passwolf/kpasswd.py" = ["PLR0913", "PLR0917"]   # the kpasswd wrappers take the full clientName/domain/target/secret set
 "src/passwolf/ldap.py" = ["PLR0913"]      # the LDAP change/reset carry target, identity, user, old+new values, and the LDAPS flag
-"src/passwolf/netlogon.py" = ["PLR0913"]  # the Netlogon change carries target, netbios, account, name, new password, and old secret
+"src/passwolf/netlogon.py" = ["PLR0913", "PLR0917"]  # the Netlogon change carries target, netbios, account, name, new password, and old secret
 "src/passwolf/cli.py" = ["T201"]                # the umbrella dispatcher prints usage/version to stdout
 "src/passwolf/change.py" = ["T201", "TRY400"]   # a CLI: prints results to stdout and logs clean user-facing errors (no traceback)
 "src/passwolf/reset.py" = ["T201", "TRY400"]    # a CLI: prints results to stdout and logs clean user-facing errors (no traceback)

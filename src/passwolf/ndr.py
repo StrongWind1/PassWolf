@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """NDR structures impacket does not model.
 
 These are the wire types for the AES and undocumented paths: SAMR opnum 73 (AES change), the AES reset
