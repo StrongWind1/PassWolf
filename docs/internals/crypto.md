@@ -30,16 +30,18 @@ These OWFs are the keying material for the legacy methods: the NT OWF keys the U
 DES keys in this protocol are stored as 7 bytes and expanded to 8 bytes by inserting a parity bit after every seventh bit. The low bit of each output byte is a parity bit. The spec's step 4 ([MS-SAMR] 2.2.11.1.2) sets it to odd parity, but DES ignores parity bits during key scheduling, so passwolf implements steps 1-3 and intentionally skips the step-4 parity computation, leaving the LSB zero. This is `transform_des_key(key7)` in `crypto.py`. The bit math below implements steps 1-3; it does not set the odd-parity bit:
 
 ```python
-out = bytes([
-    k[0] >> 1,
-    ((k[0] & 0x01) << 6) | (k[1] >> 2),
-    ((k[1] & 0x03) << 5) | (k[2] >> 3),
-    ((k[2] & 0x07) << 4) | (k[3] >> 4),
-    ((k[3] & 0x0F) << 3) | (k[4] >> 5),
-    ((k[4] & 0x1F) << 2) | (k[5] >> 6),
-    ((k[5] & 0x3F) << 1) | (k[6] >> 7),
-    k[6] & 0x7F,
-])
+out = bytes(
+    [
+        k[0] >> 1,
+        ((k[0] & 0x01) << 6) | (k[1] >> 2),
+        ((k[1] & 0x03) << 5) | (k[2] >> 3),
+        ((k[2] & 0x07) << 4) | (k[3] >> 4),
+        ((k[3] & 0x0F) << 3) | (k[4] >> 5),
+        ((k[4] & 0x1F) << 2) | (k[5] >> 6),
+        ((k[5] & 0x3F) << 1) | (k[6] >> 7),
+        k[6] & 0x7F,
+    ]
+)
 return bytes((b << 1) & 0xFF for b in out)
 ```
 
@@ -162,10 +164,10 @@ Several keys above are "the 16-byte SMB session key." The spec sources it from [
 The AES-era construction. From a content-encryption key (CEK), encryption derives two subkeys, runs AES-256-CBC over the plaintext under a random 16-byte IV, and authenticates with HMAC-SHA-512. In `crypto.py` this is `_aead_encrypt`, called via `sam_aead_encrypt`:
 
 ```python
-enc_key  = hmac.new(cek, enc_label, hashlib.sha512).digest()[:32]   # truncated to 32 bytes
-mac_key  = hmac.new(cek, mac_label, hashlib.sha512).digest()        # full 64 bytes
-cipher   = AES.new(enc_key, AES.MODE_CBC, nonce).encrypt(pkcs7_pad(plaintext))
-mac_in   = bytes([0x01]) + nonce + cipher + bytes([0x01])
+enc_key = hmac.new(cek, enc_label, hashlib.sha512).digest()[:32]  # truncated to 32 bytes
+mac_key = hmac.new(cek, mac_label, hashlib.sha512).digest()  # full 64 bytes
+cipher = AES.new(enc_key, AES.MODE_CBC, nonce).encrypt(pkcs7_pad(plaintext))
+mac_in = bytes([0x01]) + nonce + cipher + bytes([0x01])
 auth_data = hmac.new(mac_key, mac_in, hashlib.sha512).digest()
 ```
 
