@@ -1,52 +1,131 @@
 site_name: PassWolf
 site_description: Correct, spec-compliant Active Directory password change, reset, and policy read.
-site_url: https://strongwind1.github.io/PassWolf/
+site_url: https://strongwind.dev/PassWolf/
 repo_url: https://github.com/StrongWind1/PassWolf
+repo_name: StrongWind1/PassWolf
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2025 - 2026 StrongWind1
+
 theme:
   name: material
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
   palette:
-    scheme: slate
-    primary: deep purple
-    accent: deep purple
+    # Dark mode (default) — respects system preference
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    # Light mode — respects system preference
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
   features:
-    - navigation.sections
-    - navigation.top
+    # Navigation
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
     - navigation.tracking
+    - navigation.sections
+    - navigation.path
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    # Table of contents
     - toc.follow
-    - content.code.copy
+    # Search
     - search.highlight
-nav:
-  - Home: index.md
-  - Using passwolf:
-    - Getting started: guide/getting-started.md
-    - "passwolf change: change a password": guide/change.md
-    - "passwolf reset: reset a password": guide/reset.md
-    - "passwolf policy: read the policy": guide/policy.md
-    - Choosing a method: guide/choosing-a-method.md
-    - Output formats: guide/output-formats.md
-  - How it works:
-    - Architecture: internals/architecture.md
-    - Crypto and password buffers: internals/crypto.md
-    - Change methods in detail: internals/change-methods.md
-    - Reset methods in detail: internals/reset-methods.md
-    - Reading the policy in detail: internals/policy-methods.md
-    - Transport and channels: internals/transport.md
-    - Errors and NTSTATUS: internals/errors.md
-    - Compared to impacket: internals/impacket.md
-  - Reference:
-    - Method matrix: methods.md
-    - "SAMR RPC reference": reference/samr.md
-    - What it looks like in the logs: reference/events.md
+    - search.suggest
+    - search.share
+    # Header
+    - header.autohide
+    - announce.dismiss
+    # Content
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - content.action.view
+
+plugins:
+  - search
+  # Downloads the Google Fonts requested by theme.font at build time so the
+  # published site makes no third-party requests.
+  - privacy
+
 markdown_extensions:
   - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.mark
+  - pymdownx.keys
+  - tables
   - attr_list
   - md_in_html
   - def_list
-  - tables
+  - footnotes
   - toc:
       permalink: true
-  - pymdownx.highlight
-  - pymdownx.superfences
-  - pymdownx.details
-  - pymdownx.tabbed:
-      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Using passwolf:
+      - Getting started: guide/getting-started.md
+      - "passwolf change: change a password": guide/change.md
+      - "passwolf reset: reset a password": guide/reset.md
+      - "passwolf policy: read the policy": guide/policy.md
+      - Choosing a method: guide/choosing-a-method.md
+      - Output formats: guide/output-formats.md
+  - How it works:
+      - Architecture: internals/architecture.md
+      - Crypto and password buffers: internals/crypto.md
+      - Change methods in detail: internals/change-methods.md
+      - Reset methods in detail: internals/reset-methods.md
+      - Reading the policy in detail: internals/policy-methods.md
+      - Transport and channels: internals/transport.md
+      - Errors and NTSTATUS: internals/errors.md
+      - Compared to impacket: internals/impacket.md
+  - Reference:
+      - Method matrix: methods.md
+      - SAMR RPC reference: reference/samr.md
+      - What it looks like in the logs: reference/events.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/StrongWind1/PassWolf
+      name: PassWolf on GitHub
+  generator: false
+
+extra_css:
+  # theme.css is the site palette; primary and accent are both `custom`,
+  # so every Material colour variable is defined there.
+  - stylesheets/theme.css
+
+strict: true
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
