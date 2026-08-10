@@ -7,20 +7,20 @@
   <a href="https://pypi.org/project/passwolf/"><img src="https://img.shields.io/pypi/v/passwolf.svg" alt="PyPI"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"></a>
-  <a href="https://strongwind1.github.io/PassWolf/"><img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Docs"></a>
+  <a href="https://strongwind.dev/PassWolf/"><img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Docs"></a>
 </p>
 
 <p align="center">
-  <a href="https://strongwind1.github.io/PassWolf/guide/getting-started/">Getting started</a> &bull;
-  <a href="https://strongwind1.github.io/PassWolf/guide/choosing-a-method/">Choosing a method</a> &bull;
-  <a href="https://strongwind1.github.io/PassWolf/methods/">Method matrix</a> &bull;
-  <a href="https://strongwind1.github.io/PassWolf/reference/samr/">CLI reference</a> &bull;
-  <a href="https://strongwind1.github.io/PassWolf/">Documentation</a>
+  <a href="https://strongwind.dev/PassWolf/guide/getting-started/">Getting started</a> &bull;
+  <a href="https://strongwind.dev/PassWolf/guide/choosing-a-method/">Choosing a method</a> &bull;
+  <a href="https://strongwind.dev/PassWolf/methods/">Method matrix</a> &bull;
+  <a href="https://strongwind.dev/PassWolf/reference/samr/">CLI reference</a> &bull;
+  <a href="https://strongwind.dev/PassWolf/">Documentation</a>
 </p>
 
 One console command, `passwolf`, with three subcommands - `passwolf change`, `passwolf reset`, and `passwolf policy` - that implement every documented and undocumented Windows method for changing or resetting an Active Directory account password over SAMR, Netlogon, LSA, Kerberos kpasswd, and LDAP, and for reading the effective password policy. 11 change methods, 6 reset methods, and full policy read across 5 protocols - including the AES SAMR paths that Windows Server 2025 requires and no other public tool implements.
 
-**[Full documentation](https://strongwind1.github.io/PassWolf/)**
+**[Full documentation](https://strongwind.dev/PassWolf/)**
 
 ## Why PassWolf
 
