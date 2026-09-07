@@ -79,12 +79,12 @@ def des_owf_encrypt(data16: bytes, key: bytes) -> bytes:
     k2 = transform_des_key(key[DES_KEY_BYTES : DES_KEY_BYTES * 2])
     left = DES.new(k1, DES.MODE_ECB).encrypt(data16[:8])
     right = DES.new(k2, DES.MODE_ECB).encrypt(data16[8:])
-    return left + right
+    return bytes(left + right)
 
 
 def nt_owf(password: str) -> bytes:
     """NTOWFv1: MD4 of the UTF-16LE password ([MS-NLMP] 3.3.1)."""
-    return MD4.new(password.encode("utf-16le")).digest()
+    return bytes(MD4.new(password.encode("utf-16le")).digest())
 
 
 def lm_owf(password: str) -> bytes:
@@ -92,7 +92,7 @@ def lm_owf(password: str) -> bytes:
     pw = password.upper().encode("latin-1", "replace")[:14].ljust(14, b"\x00")
     k1 = transform_des_key(pw[:DES_KEY_BYTES])
     k2 = transform_des_key(pw[DES_KEY_BYTES:])
-    return DES.new(k1, DES.MODE_ECB).encrypt(LM_MAGIC) + DES.new(k2, DES.MODE_ECB).encrypt(LM_MAGIC)
+    return bytes(DES.new(k1, DES.MODE_ECB).encrypt(LM_MAGIC) + DES.new(k2, DES.MODE_ECB).encrypt(LM_MAGIC))
 
 
 def rid_to_des_key(rid: int) -> bytes:
@@ -130,7 +130,7 @@ def _aead_encrypt(cek: bytes, plaintext: bytes, enc_label: bytes, mac_label: byt
     cipher = AES.new(enc_key, AES.MODE_CBC, nonce).encrypt(pkcs7_pad(plaintext))
     mac_input = bytes([AEAD_VERSION_BYTE]) + nonce + cipher + bytes([AEAD_VERSION_BYTE])
     auth_data = hmac.new(mac_key, mac_input, hashlib.sha512).digest()
-    return auth_data, nonce, cipher
+    return auth_data, nonce, bytes(cipher)
 
 
 def sam_aead_encrypt(cek: bytes, plaintext_buffer: bytes, iv: bytes | None = None) -> tuple[bytes, bytes, bytes]:
@@ -180,7 +180,7 @@ def build_rc4_password_buffer(password: str, rc4_key: bytes) -> bytes:
         raise ValueError(msg)
     buffer = os.urandom(PASSWORD_BUFFER_BYTES - len(enc)) + enc
     plaintext = buffer + struct.pack("<L", len(enc))
-    return ARC4.new(rc4_key).encrypt(plaintext)
+    return bytes(ARC4.new(rc4_key).encrypt(plaintext))
 
 
 def build_rc4_md5_password_buffer(password: str, session_key: bytes, salt: bytes | None = None) -> bytes:
@@ -198,7 +198,7 @@ def build_rc4_md5_password_buffer(password: str, session_key: bytes, salt: bytes
     buffer = os.urandom(PASSWORD_BUFFER_BYTES - len(enc)) + enc
     plaintext = buffer + struct.pack("<L", len(enc))
     key = hashlib.md5(nonce + session_key).digest()
-    return ARC4.new(key).encrypt(plaintext) + nonce
+    return bytes(ARC4.new(key).encrypt(plaintext)) + nonce
 
 
 def build_oem_password_buffer(password: str, rc4_key: bytes) -> bytes:
@@ -219,7 +219,7 @@ def build_oem_password_buffer(password: str, rc4_key: bytes) -> bytes:
         raise ValueError(msg)
     buffer = os.urandom(PASSWORD_BUFFER_BYTES - len(pwd)) + pwd
     plaintext = buffer + struct.pack("<L", len(pwd))
-    return ARC4.new(rc4_key).encrypt(plaintext)
+    return bytes(ARC4.new(rc4_key).encrypt(plaintext))
 
 
 # --- Netlogon NL_TRUST_PASSWORD buffer ([MS-NRPC] 2.2.1.3.7, 3.4.5.2.6) ---
@@ -235,7 +235,7 @@ def build_nl_trust_password(password: str) -> bytes:
 
 def aes_cfb8_encrypt(session_key: bytes, plaintext: bytes) -> bytes:
     """AES-128-CFB8 with a zero IV under the secure-channel session key (Netlogon opnum 30)."""
-    return AES.new(session_key, AES.MODE_CFB, b"\x00" * AES_BLOCK_BYTES, segment_size=8).encrypt(plaintext)
+    return bytes(AES.new(session_key, AES.MODE_CFB, b"\x00" * AES_BLOCK_BYTES, segment_size=8).encrypt(plaintext))
 
 
 # --- LSA secret DES advancing-key cipher ([MS-LSAD] 5.1.2) ---
@@ -257,7 +257,7 @@ def des_secret_encrypt(session_key: bytes, value: bytes) -> bytes:
     idx = 0
     for i in range(0, len(framed), 8):
         key = transform_des_key(_advance_key(session_key, idx))
-        out += DES.new(key, DES.MODE_ECB).encrypt(framed[i : i + 8])
+        out += bytes(DES.new(key, DES.MODE_ECB).encrypt(framed[i : i + 8]))
         idx = (idx + DES_KEY_BYTES) % len(session_key)
     return out
 
@@ -268,7 +268,7 @@ def des_secret_decrypt(session_key: bytes, ciphertext: bytes) -> bytes:
     idx = 0
     for i in range(0, len(ciphertext), 8):
         key = transform_des_key(_advance_key(session_key, idx))
-        out += DES.new(key, DES.MODE_ECB).decrypt(ciphertext[i : i + 8])
+        out += bytes(DES.new(key, DES.MODE_ECB).decrypt(ciphertext[i : i + 8]))
         idx = (idx + DES_KEY_BYTES) % len(session_key)
     length = struct.unpack("<L", out[:4])[0]
     return out[8 : 8 + length]

@@ -105,7 +105,7 @@ def open_domain_handle(dce: DCERPC_v5, access: int = MAXIMUM_ALLOWED) -> tuple[o
     domain_name = next(d["Name"] for d in domains if d["Name"].lower() != "builtin")
     domain_sid = samr.hSamrLookupDomainInSamServer(dce, server_handle, domain_name)["DomainId"]
     domain_handle = samr.hSamrOpenDomain(dce, server_handle, access, domain_sid)["DomainHandle"]
-    return domain_handle, domain_sid, domain_name
+    return domain_handle, domain_sid, str(domain_name)
 
 
 def _query_domain(dce: DCERPC_v5, domain_handle: object, info_class: int) -> samr.SAMPR_DOMAIN_INFO_BUFFER:
@@ -277,7 +277,7 @@ def _decode_kpasswd_reply_raw(encoded: bytes, cipher: Key, sub_key: Key) -> tupl
     decrypted = cipher.decrypt(sub_key, 13, krb_priv["enc-part"]["cipher"])
     enc_part = decoder.decode(decrypted, asn1Spec=EncKrbPrivPart())[0]
     result = enc_part["user-data"].asOctets()
-    return int.from_bytes(result[:2], "big"), result[2:]
+    return int.from_bytes(result[:2], "big"), bytes(result[2:])
 
 
 def kpasswd_softerror_policy(target: Target, auth_user: str, domain: str, secret: Secret) -> PasswordPolicy:

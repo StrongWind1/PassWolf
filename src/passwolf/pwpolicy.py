@@ -322,7 +322,7 @@ def _build_config(args: argparse.Namespace) -> PolicyConfig:
     # skips the per-user methods). An explicit --target-user always wins.
     target_user = args.target_user or bind.user
 
-    methods: tuple[str, ...] = _ALL_METHODS if args.method == ALL else (args.method,)
+    methods: tuple[str, ...] = _ALL_METHODS if args.method == ALL else (str(args.method),)
     target = Target(domain=domain, user=target_user, dc=dc)
     return PolicyConfig(
         target=target,

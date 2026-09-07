@@ -50,7 +50,7 @@ def _resolve_dn(connection: LDAPConnection, sam_account: str) -> str:
     results = connection.search(searchFilter=f"(sAMAccountName={sam_account})", attributes=["distinguishedName"])
     for entry in results:
         if isinstance(entry, ldapasn1.SearchResultEntry):
-            return entry["objectName"].asOctets().decode("utf-8")
+            return str(entry["objectName"].asOctets().decode("utf-8"))
     msg = f"could not resolve a distinguishedName for {sam_account}"
     raise OperationFailed(msg)
 

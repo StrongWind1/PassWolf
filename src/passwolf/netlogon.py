@@ -43,8 +43,8 @@ def channel_type_for(kind: AccountKind) -> int:
     STATUS_NO_TRUST_SAM_ACCOUNT on a mismatch; confirmed live against a forged interdomain trust).
     """
     if kind is AccountKind.TRUST:
-        return NETLOGON_SECURE_CHANNEL_TYPE.TrustedDomainSecureChannel
-    return NETLOGON_SECURE_CHANNEL_TYPE.WorkstationSecureChannel
+        return int(NETLOGON_SECURE_CHANNEL_TYPE.TrustedDomainSecureChannel)
+    return int(NETLOGON_SECURE_CHANNEL_TYPE.WorkstationSecureChannel)
 
 
 def _nt_hash_of(secret: Secret) -> bytes:

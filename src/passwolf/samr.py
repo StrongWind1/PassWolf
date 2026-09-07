@@ -90,7 +90,7 @@ def open_user_handle(dce: DCERPC_v5, username: str, access: int = MAXIMUM_ALLOWE
     domain_handle = samr.hSamrOpenDomain(dce, server_handle, domainId=domain_sid)["DomainHandle"]
     rid = samr.hSamrLookupNamesInDomain(dce, domain_handle, [username])["RelativeIds"]["Element"][0]
     user_handle = samr.hSamrOpenUser(dce, domain_handle, access, rid)["UserHandle"]
-    return user_handle, rid
+    return user_handle, int(rid)
 
 
 # --- Capability preflight ---
