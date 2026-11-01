@@ -113,7 +113,7 @@ def parse_hash_pair(value: str | None) -> tuple[bytes | None, bytes | None]:
     A single 32-hex value is treated as the NT hash with no LM half. Either half may be the well-known
     empty-string placeholder ``aad3b435b51404eeaad3b435b51404ee`` (LM) which is returned as-is.
     """
-    if not value:
+    if value is None:
         return None, None
     parts = value.split(":")
     nt_hex = parts[-1].strip()

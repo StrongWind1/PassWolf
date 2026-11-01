@@ -172,7 +172,7 @@ class _Rows:
     @property
     def display(self) -> list[tuple[str, str]]:
         """The (label, value) pairs for text and pretty output, with units folded into the value."""
-        return [(label, f"{value} {unit}" if unit and value != "never" else value) for _key, label, value, unit in self._rows]
+        return [(label, f"{value} {unit}" if unit is not None and value != "never" else value) for _key, label, value, unit in self._rows]
 
     @property
     def json(self) -> dict[str, str]:
@@ -200,7 +200,7 @@ _GPO_NAME = {
 def _label(key: str, spec_field: str | None = None) -> str:
     """Compose an official Group Policy label, with the source protocol field appended in parentheses."""
     name = _GPO_NAME[key]
-    return f"{name} ({spec_field})" if spec_field else name
+    return f"{name} ({spec_field})" if spec_field is not None else name
 
 
 def _policy_rows(policy: PasswordPolicy) -> _Rows:

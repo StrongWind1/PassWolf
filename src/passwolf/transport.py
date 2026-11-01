@@ -81,7 +81,7 @@ class Channel:
 
 def _nt_hex(nt_hash: bytes | None) -> str:
     """Render an NT hash as the hex string impacket's credential setters expect (empty when absent)."""
-    return binascii.hexlify(nt_hash).decode() if nt_hash else ""
+    return binascii.hexlify(nt_hash).decode() if nt_hash is not None else ""
 
 
 def open_channel(target: Target, identity: BindIdentity, interface_uuid: bytes, pipe: str, kind: TransportKind, *, seal: bool = False) -> Channel:

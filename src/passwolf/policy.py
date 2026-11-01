@@ -389,13 +389,13 @@ def _entry_attrs(entry: ldapasn1.SearchResultEntry) -> dict[str, list[bytes]]:
 def _attr_int(attrs: dict[str, list[bytes]], name: str) -> int | None:
     """Read one integer-valued attribute (stored as a decimal string), or None when absent."""
     values = attrs.get(name.lower())
-    return int(values[0].decode("utf-8")) if values else None
+    return int(values[0].decode("utf-8")) if values is not None else None
 
 
 def _attr_str(attrs: dict[str, list[bytes]], name: str) -> str | None:
     """Read one string-valued attribute, or None when absent."""
     values = attrs.get(name.lower())
-    return values[0].decode("utf-8") if values else None
+    return values[0].decode("utf-8") if values is not None else None
 
 
 def _attr_bool(attrs: dict[str, list[bytes]], name: str) -> bool | None:
