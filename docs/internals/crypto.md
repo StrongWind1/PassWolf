@@ -103,7 +103,7 @@ passwolf builds the 514-byte plaintext in `build_aes_password_buffer(password)`:
 
 ## Encrypted wire structures
 
-### SAMPR_ENCRYPTED_USER_PASSWORD and _NEW
+### SAMPR_ENCRYPTED_USER_PASSWORD and_NEW
 
 The encrypted forms of the two legacy cleartext buffers are opaque byte arrays. `SAMPR_ENCRYPTED_USER_PASSWORD` is 516 bytes ([MS-SAMR] 2.2.6.21); `SAMPR_ENCRYPTED_USER_PASSWORD_NEW` is 532 bytes ([MS-SAMR] 2.2.6.22). passwolf reuses impacket's NDR classes for these two, since impacket models them correctly.
 
