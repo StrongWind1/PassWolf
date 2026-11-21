@@ -12,6 +12,7 @@ from the change/reset modules, keeping reading a separate concern with no path t
 from __future__ import annotations
 
 import configparser
+import contextlib
 import io
 import struct
 from typing import TYPE_CHECKING
@@ -132,18 +133,14 @@ def samr_password_policy(dce: DCERPC_v5, domain_handle: object) -> PasswordPolic
     lockout_duration: float | None = None
     lockout_window: float | None = None
     force_logoff: float | None = None
-    try:  # class 12: lockout duration/window/threshold (best-effort)
+    with contextlib.suppress(DCERPCException):  # class 12: lockout duration/window/threshold (best-effort)
         lockout = _query_domain(dce, domain_handle, DOMAIN_LOCKOUT_INFORMATION)["Lockout"]
         lockout_threshold = int(lockout["LockoutThreshold"])
         lockout_duration = ticks_to_minutes(_hyper_signed(lockout["LockoutDuration"]))
         lockout_window = ticks_to_minutes(_hyper_signed(lockout["LockoutObservationWindow"]))
-    except DCERPCException:
-        pass
-    try:  # class 3: force-logoff interval, reported in seconds (best-effort)
+    with contextlib.suppress(DCERPCException):  # class 3: force-logoff interval, reported in seconds (best-effort)
         logoff = _query_domain(dce, domain_handle, DOMAIN_LOGOFF_INFORMATION)["Logoff"]
         force_logoff = _ticks_to_seconds(_old_li_ticks(logoff["ForceLogoff"]))
-    except DCERPCException:
-        pass
     return PasswordPolicy(
         source="samr-query (opnum 46)",
         min_password_length=int(password["MinPasswordLength"]),

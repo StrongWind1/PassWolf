@@ -53,7 +53,6 @@ SYSVOL = "sysvol"
 ALL = "all"
 
 _SAMR_METHODS = (SAMR_QUERY, SAMR_GETDOM, SAMR_GETUSR, SAMR_DIAG)
-_LDAP_METHODS = (LDAP_DOMAIN, LDAP_PSO, LDAP_RESULTANT, LDAP_UAC)
 # Methods that resolve a named account's fine-grained policy without that account's secret; they need
 # --target-user and are skipped without it.
 _TARGET_METHODS = (SAMR_GETUSR, LDAP_RESULTANT, LDAP_UAC)
