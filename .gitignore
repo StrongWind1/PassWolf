@@ -11,3 +11,6 @@ site/
 .cache/
 .coverage
 htmlcov/
+
+# Built-site checkers (npm ci)
+node_modules/
